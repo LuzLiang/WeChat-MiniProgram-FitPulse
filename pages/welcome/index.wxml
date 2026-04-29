@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="header">
+    <text class="title">FitPulse</text>
+    <text class="subtitle">请选择今日模式</text>
+  </view>
+
+  <view class="mode-list">
+    <view class="mode-card" bindtap="selectMode" data-p="140" data-c="150" data-mode="减脂模式">
+      <view class="mode-info">
+        <text class="mode-name">减脂模式</text>
+        <text class="mode-desc">高蛋白 · 低碳水</text>
+      </view>
+      <view class="mode-arrow">→</view>
+    </view>
+
+    <view class="mode-card" bindtap="selectMode" data-p="130" data-c="220" data-mode="增肌模式">
+      <view class="mode-info">
+        <text class="mode-name">增肌模式</text>
+        <text class="mode-desc">充足热量 · 肌肉生长</text>
+      </view>
+      <view class="mode-arrow">→</view>
+    </view>
+
+    <view class="mode-card" bindtap="selectMode" data-p="120" data-c="180" data-mode="平衡模式">
+      <view class="mode-info">
+        <text class="mode-name">平衡模式</text>
+        <text class="mode-desc">日常维持 · 健康饮食</text>
+      </view>
+      <view class="mode-arrow">→</view>
+    </view>
+  </view>
+</view>

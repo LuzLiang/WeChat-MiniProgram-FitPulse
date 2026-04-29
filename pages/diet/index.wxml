@@ -1,0 +1,98 @@
+<view class="container">
+  <!-- 顶部状态栏：维涅里网格秩序 -->
+  <view class="header-container">
+    <picker mode="selector" range="{{['健身模式', '减脂模式', '增肌模式']}}" bindchange="onModeChange">
+      <view class="mode-text-btn">
+        {{modeName}} <text class="minimal-arrow">⌄</text>
+      </view>
+    </picker>
+    <text class="header-title">今日进度</text>
+    <view class="reset-icon-wrapper" bindtap="resetTodayData">
+      <text class="reset-symbol">↺</text>
+    </view>
+  </view>
+
+  <!-- 环形进度条区域：纯粹几何体 -->
+  <view class="rings-grid">
+    <view class="ring-box">
+      <view class="ring p-ring" style="background: conic-gradient(#000 {{intake.p/targets.p*100}}%, #f0f0f0 0)"></view>
+      <view class="ring-data">
+        <text class="label">蛋白</text>
+        <text class="value">{{intake.p}}g</text>
+      </view>
+    </view>
+    <view class="ring-box">
+      <view class="ring c-ring" style="background: conic-gradient(#000 {{intake.c/targets.c*100}}%, #f0f0f0 0)"></view>
+      <view class="ring-data">
+        <text class="label">碳水</text>
+        <text class="value">{{intake.c}}g</text>
+      </view>
+    </view>
+    <view class="ring-box">
+      <view class="ring f-ring" style="background: conic-gradient(#000 {{intake.f/targets.f*100}}%, #f0f0f0 0)"></view>
+      <view class="ring-data">
+        <text class="label">脂肪</text>
+        <text class="value">{{intake.f}}g</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主操作区：原研哉“空”之核心 -->
+  <view class="main-stage">
+    <!-- 统一导航：无边框文本流 -->
+    <scroll-view class="cat-nav" scroll-x show-scrollbar="{{false}}">
+      <view 
+        wx:for="{{foodDatabase}}" 
+        wx:key="category"
+        class="nav-item {{currentCatIdx === index ? 'active' : ''}}"
+        bindtap="selectCategory"
+        data-idx="{{index}}"
+      >
+        {{item.category}}
+      </view>
+    </scroll-view>
+
+    <!-- 精准单品：极致提纯 -->
+    <view class="food-selector-box">
+      <picker 
+        mode="selector" 
+        range="{{foodDatabase[currentCatIdx].items}}" 
+        range-key="name" 
+        value="{{currentFoodIdx}}"
+        bindchange="onFoodChange"
+      >
+        <view class="food-text-picker">
+          {{foodDatabase[currentCatIdx].items[currentFoodIdx].name}} <text class="minimal-arrow">⌄</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 视觉黑洞：数据操作中心 -->
+    <view class="input-focus-group">
+      <view class="input-row">
+        <input 
+          class="numeric-giant" 
+          type="digit" 
+          placeholder="0" 
+          placeholder-class="giant-placeholder"
+          bindinput="onWeightInput" 
+          value="{{inputValue}}" 
+        />
+        <text class="unit-label">g</text>
+      </view>
+      
+      <!-- 数据引力：紧密贴附 -->
+      <view class="nutrient-gravity-bar">
+        <text>P {{calcResult.p}}</text>
+        <text>C {{calcResult.c}}</text>
+        <text>F {{calcResult.f}}</text>
+      </view>
+
+      <!-- 重新锚定：紧随数据面板 -->
+      <button class="confirm-trigger" bindtap="addIntake">确认摄入</button>
+    </view>
+  </view>
+
+  <!-- 底部留空：适配安全区 -->
+  <view class="action-footer"></view>
+</view>

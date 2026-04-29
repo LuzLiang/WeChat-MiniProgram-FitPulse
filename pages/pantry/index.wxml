@@ -1,0 +1,75 @@
+<view class="container">
+  <!-- 顶部 Tab 切换 -->
+  <view class="tab-header">
+    <view 
+      wx:for="{{tabs}}" 
+      wx:key="index" 
+      class="tab-item {{currentTab === index ? 'tab-active' : ''}}" 
+      bindtap="switchTab" 
+      data-index="{{index}}"
+    >
+      {{item}}
+      <view class="tab-line" wx:if="{{currentTab === index}}"></view>
+    </view>
+  </view>
+
+  <!-- 主食模块 -->
+  <block wx:if="{{currentTab === 0}}">
+    <view class="input-card">
+      <text class="input-label">吃了几两？</text>
+      <view class="input-box">
+        <input class="main-input" type="digit" placeholder="0" placeholder-class="ph-style" bindinput="onLiangInput" value="{{liangValue}}" />
+        <view class="input-line line-orange"></view>
+      </view>
+      <text class="input-unit">两</text>
+    </view>
+
+    <view class="result-row">
+      <view class="res-card weight-bg">
+        <text class="res-label">总重量</text>
+        <view class="res-value-wrap fade-in {{weightG > 0 ? 'show' : ''}}">
+          <text class="res-value">{{weightG}}</text>
+          <text class="res-unit">g</text>
+        </view>
+      </view>
+      <view class="res-card carb-bg">
+        <text class="res-label">碳水约</text>
+        <view class="res-value-wrap fade-in {{carbG > 0 ? 'show' : ''}}">
+          <text class="res-value">{{carbG}}</text>
+          <text class="res-unit">g</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 肉类模块 -->
+  <block wx:else>
+    <view class="input-card">
+      <picker bindchange="onMeatChange" value="{{meatIndex}}" range="{{meatTypes}}" range-key="name">
+        <view class="picker-box">
+          {{meatTypes[meatIndex].name}} <text class="arrow">▾</text>
+        </view>
+      </picker>
+      <view class="input-box">
+        <input class="main-input" type="digit" placeholder="0" placeholder-class="ph-style" bindinput="onMeatInput" value="{{meatG}}" />
+        <view class="input-line line-blue"></view>
+      </view>
+      <text class="input-unit">克 (g)</text>
+    </view>
+
+    <view class="result-row">
+      <view class="res-card protein-bg">
+        <text class="res-label">蛋白质含量</text>
+        <view class="res-value-wrap fade-in {{proteinG > 0 ? 'show' : ''}}">
+          <text class="res-value">{{proteinG}}</text>
+          <text class="res-unit">g</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 底部声明 -->
+  <view class="footer">
+    <text>数据参考自中国居民膳食指南</text>
+  </view>
+</view>

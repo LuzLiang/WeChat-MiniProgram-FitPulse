@@ -1,0 +1,64 @@
+.container {
+  padding: 80rpx 60rpx;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 100rpx;
+  text-align: center;
+}
+
+.title {
+  font-size: 64rpx;
+  font-weight: 800;
+  letter-spacing: -2rpx;
+  display: block;
+  color: #000;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+.mode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40rpx;
+}
+
+.mode-card {
+  padding: 50rpx 40rpx;
+  background: #f8f9fa;
+  border-radius: 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1rpx solid #efefef;
+  transition: all 0.2s ease;
+}
+
+.mode-card:active {
+  transform: scale(0.97);
+  background: #f1f3f5;
+}
+
+.mode-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.mode-desc {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.mode-arrow {
+  font-size: 40rpx;
+  color: #000;
+  font-weight: 300;
+}

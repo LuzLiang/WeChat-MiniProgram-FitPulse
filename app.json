@@ -1,0 +1,32 @@
+{
+     "entryPagePath": "pages/diet/index",
+     "pages": [
+       "pages/diet/index",
+      "pages/welcome/index",
+       "pages/pantry/index"
+     ],
+    "window": {
+     "navigationBarTextStyle": "black",
+     "navigationBarTitleText": "FitPulse",
+      "navigationBarBackgroundColor": "#ffffff",
+     "backgroundColor": "#ffffff"
+    },
+   "tabBar": {
+     "selectedColor": "#000000",
+      "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+      "list": [
+        {
+         "pagePath": "pages/diet/index",
+         "text": "追踪"
+        },
+        {
+         "pagePath": "pages/pantry/index",
+         "text": "库存"
+       }
+    ]
+   },
+   "lazyCodeLoading": "requiredComponents",
+ "style": "v2",
+   "sitemapLocation": "sitemap.json"
+ }
