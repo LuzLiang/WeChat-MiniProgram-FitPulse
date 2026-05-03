@@ -1,234 +1,489 @@
-/**
- * FitPulse Master Refactoring
- * Philosophies: Kenya Hara (Emptiness), Massimo Vignelli (Order), Paul Rand (Drama)
- */
+/* FitPulse Unified Theme - Pro Vision */
+
+/* =========================================
+   修复弹窗（SET）不悬浮的问题
+   ========================================= */
+   .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
+    z-index: 9999; /* 确保层级最高 */
+    display: flex;
+    align-items: flex-end; /* 底部对齐 */
+  }
+  
+  /* =========================================
+     美化 LAST LOG（更有呼吸感的卡片设计）
+     ========================================= */
+  .history-peek {
+    margin-top: 40rpx;
+    padding: 24rpx 32rpx;
+    background: #f9f9f9;
+    border-radius: 24rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1rpx solid #f2f2f7;
+  }
+  
+  .peek-label {
+    font-size: 20rpx;
+    font-weight: 900;
+    color: #aeaeb2;
+    letter-spacing: 0.1em;
+  }
+  
+  .peek-value {
+    font-size: 28rpx;
+    font-weight: 800;
+    color: #000;
+  }
+
+page {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  font-family: -apple-system, "Inter", "SF Pro Display", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
 .container {
-  padding: 60rpx 40rpx;
-  background-color: #ffffff;
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, "DIN Alternate", "Helvetica Neue", sans-serif;
-  box-sizing: border-box;
+  min-height: 100vh;
 }
 
-/* 一、建立绝对的几何与网格秩序 (Massimo Vignelli) */
-.header-container {
+/* --- Precision Header (Fixed & Bold) --- */
+.safe-header {
+  background: #ffffff;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  border-bottom: 1rpx solid #f2f2f7;
+}
+
+.header-title-group {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  margin-bottom: 80rpx;
-  flex-shrink: 0;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.header-title {
+.header-main {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 30rpx;
-  font-weight: 700;
-  letter-spacing: 2rpx;
-  color: #000;
-  text-transform: uppercase;
-}
-
-.mode-text-btn {
-  font-size: 24rpx;
-  font-weight: 500;
-  color: #999;
+  left: 40rpx;
+  right: 40rpx;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-.minimal-arrow {
-  font-size: 20rpx;
-  margin-left: 8rpx;
-  color: #ccc;
-  font-weight: 300;
+.page-title { 
+  font-size: 36rpx; 
+  font-weight: 700; 
+  letter-spacing: -0.04em; 
+  line-height: 1.2;
 }
 
-.reset-symbol {
-  font-size: 36rpx;
-  color: #eee;
-  font-weight: 300;
+.page-label { 
+  font-size: 18rpx; 
+  font-weight: 800; 
+  color: #8a8a8e; 
+  letter-spacing: 0.1em; 
+  line-height: 1.2;
 }
 
-/* 进度环网格：纯粹几何对抗 */
-.rings-grid {
+.icon-btn {
+  background: #f2f2f7;
+  border-radius: 12rpx;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 100rpx;
-  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
 }
 
-.ring-box {
+.icon-settings-text {
+  font-size: 18rpx;
+  font-weight: 900;
+  color: #007aff;
+}
+
+/* --- Pro Rings Terminal --- */
+.rings-terminal {
+  display: flex;
+  justify-content: space-around;
+  padding: 16rpx 40rpx 32rpx;
+  background: #ffffff;
+}
+
+.ring-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
 }
 
-.ring {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
+.ring-shell {
+  width: 140rpx;
+  height: 140rpx;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24rpx;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.ring::after {
-  content: '';
-  width: 92rpx;
-  height: 92rpx;
-  background: #fff;
+.ring-canvas {
+  width: 130rpx;
+  height: 130rpx;
   border-radius: 50%;
-}
-
-.ring-data {
-  text-align: center;
-}
-
-.label {
-  display: block;
-  font-size: 18rpx;
-  color: #ccc;
-  margin-bottom: 4rpx;
-  letter-spacing: 1rpx;
-}
-
-.value {
-  font-size: 24rpx;
-  font-weight: 600;
-  color: #000;
-}
-
-/* 二、剥离视觉冗余 (Kenya Hara) */
-.main-stage {
-  flex: 1;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ring-core {
+  width: 106rpx;
+  height: 106rpx;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2rpx 6rpx rgba(0,0,0,0.02);
+}
+
+.ring-pct {
+  font-size: 24rpx;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.ring-info {
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column; /* 解决 PRO 和 0g 横向重叠的问题 */
   align-items: center;
 }
 
-.cat-nav {
-  white-space: nowrap;
-  width: 100%;
-  height: 60rpx;
+.ring-label {
+  font-size: 16rpx;
+  font-weight: 900;
+  color: #aeaeb2;
+  letter-spacing: 0.1em;
+  margin-bottom: 4rpx;
+}
+
+.ring-val {
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+/* --- Centered Composer --- */
+.composer-section {
+  padding: 0 40rpx 20rpx;
+}
+
+.composer-card {
+  background: #ffffff;
+  border: 1rpx solid #f2f2f7;
+  border-radius: 40rpx;
+  padding: 32rpx 40rpx;
+  box-shadow: 0 10rpx 40rpx rgba(0,0,0,0.02);
+}
+
+.composer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 40rpx;
 }
 
-.nav-item {
-  display: inline-block;
-  font-size: 26rpx;
-  color: #ccc;
-  margin-right: 48rpx;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.section-title {
+  font-size: 32rpx;
+  font-weight: 800;
 }
 
-.nav-item.active {
-  color: #000;
+.reset-trigger {
+  font-size: 20rpx;
+  font-weight: 900;
+  color: #ff3b30;
+  background: #fff1f0;
+  padding: 10rpx 20rpx;
+  border-radius: 8rpx;
+}
+
+.segmented-control {
+  display: flex;
+  background: #f2f2f7;
+  padding: 6rpx;
+  border-radius: 20rpx;
+  margin-bottom: 48rpx;
+}
+
+.segment-item {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
   font-weight: 700;
+  padding: 16rpx 0;
+  color: #8a8a8e;
+  border-radius: 16rpx;
 }
 
-.food-selector-box {
+.segment-item.active {
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.input-matrix {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 48rpx;
+}
+
+.input-group { display: flex; flex-direction: column; }
+.input-label {
+  font-size: 16rpx;
+  font-weight: 900;
+  color: #c7c7cc;
+  margin-bottom: 12rpx;
+  letter-spacing: 0.08em;
+}
+
+.main-picker { flex: 2; }
+.weight-input { flex: 1; }
+
+/* 替换掉原来的 .picker-value, .amount-field */
+.picker-value {
+  background: #f9f9f9;
+  border: 1rpx solid #f2f2f7;
+  height: 100rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 👈 核心魔法：让文字居左，箭头居右 */
+  padding: 0 28rpx;
+  width: 100%;
+}
+
+.amount-field {
+  background: #f9f9f9;
+  border: 1rpx solid #f2f2f7;
+  height: 100rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 28rpx;
+}
+
+/* 加上这个类，把字母 v 变成高级的下拉小箭头 */
+.chevron-v {
+  color: #c7c7cc;
+  font-family: -apple-system, sans-serif;
+  font-size: 24rpx;
+  transform: scaleX(1.5) scaleY(0.8); /* 压扁拉宽，营造图标质感 */
+  display: inline-block;
+  margin-left: 20rpx;
+}
+
+.amount-field input { font-size: 32rpx; font-weight: 800; }
+
+/* Centered Button Wrapper */
+.action-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 48rpx;
+}
+
+.primary-action-centered {
+  background: #000;
+  color: #fff;
+  width: 70% !important;
+  height: 104rpx;
+  border-radius: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0;
+  margin: 0 !important;
+}
+
+.projection-strip {
+  display: flex;
+  justify-content: space-around;
+  padding: 28rpx;
+  background: #f2faff;
+  border: 1rpx solid #e1f2ff;
+  border-radius: 24rpx;
+}
+
+.proj-item { font-size: 24rpx; font-weight: 900; color: #007aff; }
+
+/* --- Pro Target Modal --- */
+.modal-content-pro {
+  width: 100%;
+  background: #fff;
+  border-radius: 54rpx 54rpx 0 0;
+  padding: 60rpx 40rpx calc(80rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -20rpx 60rpx rgba(0,0,0,0.1);
+}
+
+.modal-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 60rpx;
 }
 
-.food-text-picker {
-  font-size: 32rpx;
-  color: #000;
-  font-weight: 600;
+.modal-title-bold { font-size: 40rpx; font-weight: 900; color: #000; }
+
+.target-editor-grid {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 32rpx;
 }
 
-/* 视觉黑洞与数据引力 (Paul Rand) */
-.input-focus-group {
+.editor-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  background: #f9f9f9;
+  border-radius: 28rpx;
+}
+
+.editor-info { display: flex; flex-direction: column; }
+.editor-label { font-size: 30rpx; font-weight: 800; color: #000; margin-bottom: 4rpx; }
+.editor-sub { font-size: 18rpx; font-weight: 600; color: #aeaeb2; }
+
+.editor-input-box {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.editor-input-box input {
+  font-size: 44rpx;
+  font-weight: 900;
+  width: 140rpx;
+  text-align: right;
+}
+
+.editor-unit { font-size: 22rpx; font-weight: 800; color: #c7c7cc; }
+
+.modal-footer { margin-top: 60rpx; }
+.save-targets-btn {
+  background: #000;
+  color: #fff;
+  height: 110rpx;
+  border-radius: 32rpx;
+  font-weight: 900;
+  font-size: 28rpx;
+  letter-spacing: 0.1em;
+  width: 100% !important;
+  /* 下面这三行是居中魔法 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; 
+}
+
+/* --- Quick Converter (Pro Vision) --- */
+.quick-converter {
+  padding: 0 40rpx 40rpx;
+}
+
+.converter-card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  border: 1rpx solid #f2f2f7;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.02);
+}
+
+.converter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20rpx;
+}
+
+.section-sub {
+  font-size: 16rpx;
+  font-weight: 900;
+  color: #aeaeb2;
+  letter-spacing: 0.1em;
+}
+
+.converter-controls {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.picker-value-mini {
+  background: #f9f9f9;
+  border: 1rpx solid #f2f2f7;
+  height: 76rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.control-group input {
+  background: #f9f9f9;
+  border: 1rpx solid #f2f2f7;
+  height: 76rpx;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.converter-result-area {
+  background: #f9f9f9;
+  padding: 24rpx;
+  border-radius: 20rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 20rpx;
-  width: 100%;
 }
 
-.input-row {
+.result-label {
+  font-size: 16rpx;
+  font-weight: 900;
+  color: #aeaeb2;
+  margin-bottom: 12rpx;
+}
+
+.result-display {
   display: flex;
   align-items: baseline;
-  justify-content: center;
-  margin-bottom: 8rpx;
-  gap: 8rpx; /* 缩紧数字与单位间距 */
+  gap: 12rpx;
 }
 
-.numeric-giant {
-  font-size: 180rpx;
-  font-weight: 800;
-  height: 200rpx;
-  text-align: center;
-  width: 320rpx; /* 稍微缩窄宽度以增强聚集感 */
-  color: #000;
-  letter-spacing: -4rpx;
-}
-
-.giant-placeholder {
-  color: #f5f5f5;
-}
-
-.unit-label {
+.result-num {
   font-size: 40rpx;
-  color: #eee;
-  font-weight: 500;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.02em;
 }
 
-.nutrient-gravity-bar {
-  display: flex;
-  gap: 40rpx;
-}
-
-.nutrient-gravity-bar text {
+.result-unit {
   font-size: 22rpx;
-  color: #ccc;
-  font-weight: 500;
-  letter-spacing: 1rpx;
-}
-
-/* 三、注入对比张力 (Paul Rand) */
-.action-footer {
-  padding-bottom: env(safe-area-inset-bottom);
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.confirm-trigger {
-  background: #000;
-  color: #fff;
-  border-radius: 24rpx; /* Apple 风格微圆角 */
-  height: 110rpx;
-  display: flex; /* 修复文字对齐 */
-  justify-content: center;
-  align-items: center;
-  font-size: 28rpx;
   font-weight: 700;
-  letter-spacing: 4rpx;
-  width: 85% !important; /* 重新锚定宽度 */
-  margin-top: 60rpx; /* 紧贴上方数据面板 */
-  border: none;
-}
-
-.confirm-trigger::after {
-  display: none;
-}
-
-.confirm-trigger:active {
-  opacity: 0.8;
-  transform: scale(0.995);
+  color: #8e8e93;
 }

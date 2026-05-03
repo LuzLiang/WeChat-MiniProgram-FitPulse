@@ -1,0 +1,214 @@
+/* Stats Page - Advanced Analytical Layout */
+
+/* =========================================
+   1. 补全缺失的自定义导航栏样式
+   ========================================= */
+   .safe-header {
+    background: #ffffff;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    /* 确保有底部边框区分 */
+    border-bottom: 1rpx solid #f2f2f7; 
+  }
+  
+  .header-main {
+    position: absolute;
+    left: 40rpx;
+    display: flex;
+    align-items: center; /* 垂直居中于右侧胶囊按钮 */
+  }
+  .header-title-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .page-title { 
+    font-size: 36rpx; 
+    font-weight: 700; 
+    color: #000000;
+    letter-spacing: -0.04em; 
+    line-height: 1.2;
+  }
+  
+  .page-label { 
+    font-size: 18rpx; 
+    font-weight: 800; 
+    color: #8a8a8e; 
+    letter-spacing: 0.1em; 
+    line-height: 1.2;
+  }
+  
+  /* =========================================
+     2. 主体内容与图表排版优化
+     ========================================= */
+  .insights-frame {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .canvas-viewport {
+    width: 100vw;
+    /* 将 40vh 替换为 450rpx，控制波浪图在合理的视觉高度 */
+    height: 450rpx; 
+    background: #ffffff;
+    position: relative;
+    border-bottom: 1rpx solid #f2f2f7;
+  }
+  
+  .wave-canvas { 
+    width: 100%; 
+    height: 100%; 
+  }
+  
+  .frame-controls {
+    padding: 40rpx;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .summary-grid {
+    display: flex;
+    padding: 0 40rpx 60rpx;
+    gap: 80rpx;
+  }
+  
+  .summary-cell { 
+    display: flex; 
+    flex-direction: column; 
+  }
+  
+  .cell-label {
+    font-size: 18rpx;
+    font-weight: 900;
+    color: #c7c7cc;
+    letter-spacing: 0.1em;
+    margin-bottom: 12rpx;
+  }
+  
+  .cell-value {
+    font-size: 32rpx;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #000;
+  }
+  
+  .tab-group { 
+    display: flex; 
+    gap: 14rpx; 
+  }
+  
+  .tab-item {
+    padding: 12rpx 28rpx;
+    font-size: 22rpx;
+    font-weight: 700;
+    color: #8e8e93;
+    background: #f2f2f7;
+    border-radius: 14rpx;
+  }
+  
+  .tab-item.active { 
+    background: #000; 
+    color: #fff; 
+  }
+
+  /* =========================================
+   3. 7日详细数据清单 (Daily Breakdown)
+   ========================================= */
+.history-list-section {
+  padding: 0 40rpx 60rpx;
+}
+
+.section-label {
+  font-size: 20rpx;
+  font-weight: 900;
+  color: #aeaeb2;
+  letter-spacing: 0.1em;
+  margin-bottom: 24rpx;
+  display: block;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column-reverse; /* 魔法：让最近的一天自动排在最上面 */
+  gap: 16rpx;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 32rpx;
+  background: #f9f9f9;
+  border-radius: 24rpx;
+  border: 1rpx solid #f2f2f7;
+}
+
+.empty-day {
+  opacity: 0.5; /* 没吃东西的那天自动变半透明，不抢视觉 */
+}
+
+.hi-date {
+  display: flex;
+  flex-direction: column;
+  width: 90rpx;
+}
+
+.hi-day {
+  font-size: 24rpx;
+  font-weight: 800;
+  color: #000;
+}
+
+.hi-date-str {
+  font-size: 18rpx;
+  font-weight: 700;
+  color: #aeaeb2;
+  margin-top: 4rpx;
+}
+
+.hi-macros {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.m-val {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #8a8a8e;
+}
+
+.m-dot {
+  color: #d1d1d6;
+  font-size: 20rpx;
+  font-weight: 900;
+}
+
+.empty-text {
+  font-size: 22rpx;
+  font-style: italic;
+  color: #c7c7cc;
+}
+
+.hi-total {
+  text-align: right;
+  width: 120rpx;
+}
+
+.t-num {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.02em;
+}
+
+.t-unit {
+  font-size: 18rpx;
+  font-weight: 700;
+  color: #aeaeb2;
+  margin-left: 4rpx;
+}

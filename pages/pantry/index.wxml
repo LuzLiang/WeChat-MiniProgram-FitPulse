@@ -1,75 +1,103 @@
 <view class="container">
-  <!-- 顶部 Tab 切换 -->
-  <view class="tab-header">
-    <view 
-      wx:for="{{tabs}}" 
-      wx:key="index" 
-      class="tab-item {{currentTab === index ? 'tab-active' : ''}}" 
-      bindtap="switchTab" 
-      data-index="{{index}}"
-    >
-      {{item}}
-      <view class="tab-line" wx:if="{{currentTab === index}}"></view>
+  <!-- Precision Custom Header (Real-time Size Acquisition Active) -->
+  <view class="safe-header" style="height: {{navHeight}}px;">
+    <view class="header-main" style="top: {{menuTop}}px; height: {{menuHeight}}px; right: {{menuRight}}px;">
+      <view class="header-title-group">
+        <text class="page-label">INVENTORY</text>
+        <text class="page-title">Pantry Manager</text>
+      </view>
+      <view class="header-actions">
+        <view class="add-btn-minimal" bindtap="toggleAddModal" style="height: {{menuHeight}}px;">
+          <text>+ ADD ITEM</text>
+        </view>
+      </view>
     </view>
   </view>
-
-  <!-- 主食模块 -->
-  <block wx:if="{{currentTab === 0}}">
-    <view class="input-card">
-      <text class="input-label">吃了几两？</text>
-      <view class="input-box">
-        <input class="main-input" type="digit" placeholder="0" placeholder-class="ph-style" bindinput="onLiangInput" value="{{liangValue}}" />
-        <view class="input-line line-orange"></view>
-      </view>
-      <text class="input-unit">两</text>
-    </view>
-
-    <view class="result-row">
-      <view class="res-card weight-bg">
-        <text class="res-label">总重量</text>
-        <view class="res-value-wrap fade-in {{weightG > 0 ? 'show' : ''}}">
-          <text class="res-value">{{weightG}}</text>
-          <text class="res-unit">g</text>
+  <view class="content-body" style="padding-top: {{navHeight}}px;">
+    <!-- Inventory Strip Board (Long Strips directly under title) -->
+    <scroll-view class="pantry-scroll-pro" scroll-y>
+      <view 
+        wx:for="{{pantryList}}" 
+        wx:key="id" 
+        class="inventory-strip {{item.currentWeight <= 0 ? 'depleted' : ''}}"
+        bindtap="restockItem"
+        bindlongpress="onLongPressPantryItem"
+        data-id="{{item.id}}"
+      >
+        <view class="strip-header">
+          <view class="item-meta">
+            <text class="item-cat">{{item.category}}</text>
+            <text class="item-name">{{item.name}}</text>
+          </view>
+          <view class="item-weight">
+            <text class="val">{{item.currentWeight}}</text>
+            <text class="unit">/ {{item.totalWeight}}g</text>
+          </view>
         </view>
-      </view>
-      <view class="res-card carb-bg">
-        <text class="res-label">碳水约</text>
-        <view class="res-value-wrap fade-in {{carbG > 0 ? 'show' : ''}}">
-          <text class="res-value">{{carbG}}</text>
-          <text class="res-unit">g</text>
+        <view class="strip-bar-shell">
+          <view class="strip-bar-fill" style="width: {{(item.currentWeight/item.totalWeight)*100 + '%'}}"></view>
         </view>
+        <view class="depleted-tag" wx:if="{{item.currentWeight <= 0}}">DEPLETED</view>
+      </view>
+
+      <view class="empty-state" wx:if="{{pantryList.length === 0}}">
+        <text>Inventory is clear.</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- Add Item Modal (Redesigned & Centered) -->
+  <view class="modal-overlay" wx:if="{{showAddModal}}" bindtap="toggleAddModal">
+    <view class="modal-content-pro" catchtap="noop">
+      <view class="modal-top-bar">
+        <text class="modal-title-bold">New Inventory</text>
+        <view class="close-x-btn" bindtap="toggleAddModal">✕</view>
+      </view>
+      
+      <scroll-view class="modal-body-scroll" scroll-y>
+        <view class="form-section">
+          <text class="section-tag">CATEGORIES</text>
+          <view class="cat-pill-grid">
+            <view wx:for="{{categories}}" wx:key="*this" class="cat-pill {{selectedCatIdx === index ? 'active' : ''}}" bindtap="selectAddCategory" bindlongpress="deleteCategory" data-idx="{{index}}">{{item}}</view>
+            <view class="cat-pill add-trigger" bindtap="handleAddNewCat">+ NEW</view>
+          </view>
+        </view>
+
+        <view class="form-section">
+          <text class="section-tag">ITEM DETAILS</text>
+          <view class="pro-form">
+            <view class="input-row-pro">
+              <text>Name</text>
+              <input type="text" value="{{newFood.name}}" data-key="name" bindinput="onInputChange" placeholder="Beef, Rice, etc." />
+            </view>
+            <view class="input-row-pro">
+              <text>Total Weight (g)</text>
+              <input type="digit" value="{{newFood.totalWeight}}" data-key="totalWeight" bindinput="onInputChange" placeholder="0" />
+            </view>
+            <view class="input-row-pro macro-field-row">
+              <text>Nutrients / 100g</text>
+              <view class="macro-group">
+                <view class="macro-input-wrap" style="display: flex; flex-direction: row; align-items: center; gap: 4px;">
+                  <text class="input-hint-tiny">P</text>
+                  <input type="digit" value="{{newFood.protein}}" data-key="protein" bindinput="onInputChange" placeholder="0" />
+                </view>
+                <view class="macro-input-wrap" style="display: flex; flex-direction: row; align-items: center; gap: 4px;">
+                  <text class="input-hint-tiny">C</text>
+                  <input type="digit" value="{{newFood.carbs}}" data-key="carbs" bindinput="onInputChange" placeholder="0" />
+                </view>
+                <view class="macro-input-wrap" style="display: flex; flex-direction: row; align-items: center; gap: 4px;">
+                  <text class="input-hint-tiny">F</text>
+                  <input type="digit" value="{{newFood.fat}}" data-key="fat" bindinput="onInputChange" placeholder="0" />
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="modal-footer-centered">
+        <button class="confirm-entry-btn" bindtap="addFoodToPantry">CONFIRM ENTRY</button>
       </view>
     </view>
-  </block>
-
-  <!-- 肉类模块 -->
-  <block wx:else>
-    <view class="input-card">
-      <picker bindchange="onMeatChange" value="{{meatIndex}}" range="{{meatTypes}}" range-key="name">
-        <view class="picker-box">
-          {{meatTypes[meatIndex].name}} <text class="arrow">▾</text>
-        </view>
-      </picker>
-      <view class="input-box">
-        <input class="main-input" type="digit" placeholder="0" placeholder-class="ph-style" bindinput="onMeatInput" value="{{meatG}}" />
-        <view class="input-line line-blue"></view>
-      </view>
-      <text class="input-unit">克 (g)</text>
-    </view>
-
-    <view class="result-row">
-      <view class="res-card protein-bg">
-        <text class="res-label">蛋白质含量</text>
-        <view class="res-value-wrap fade-in {{proteinG > 0 ? 'show' : ''}}">
-          <text class="res-value">{{proteinG}}</text>
-          <text class="res-unit">g</text>
-        </view>
-      </view>
-    </view>
-  </block>
-
-  <!-- 底部声明 -->
-  <view class="footer">
-    <text>数据参考自中国居民膳食指南</text>
   </view>
 </view>

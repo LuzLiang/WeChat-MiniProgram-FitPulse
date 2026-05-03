@@ -1,98 +1,196 @@
 <view class="container">
-  <!-- 顶部状态栏：维涅里网格秩序 -->
-  <view class="header-container">
-    <picker mode="selector" range="{{['健身模式', '减脂模式', '增肌模式']}}" bindchange="onModeChange">
-      <view class="mode-text-btn">
-        {{modeName}} <text class="minimal-arrow">⌄</text>
+  <!-- Precision Custom Header -->
+  <view class="safe-header" style="height: {{navHeight}}px;">
+    <view class="header-main" style="top: {{menuTop}}px; height: {{menuHeight}}px; right: {{menuRight}}px;">
+      <view class="header-title-group">
+        <text class="page-label">DASHBOARD</text>
+        <text class="page-title">Dietary Intake</text>
       </view>
-    </picker>
-    <text class="header-title">今日进度</text>
-    <view class="reset-icon-wrapper" bindtap="resetTodayData">
-      <text class="reset-symbol">↺</text>
-    </view>
-  </view>
-
-  <!-- 环形进度条区域：纯粹几何体 -->
-  <view class="rings-grid">
-    <view class="ring-box">
-      <view class="ring p-ring" style="background: conic-gradient(#000 {{intake.p/targets.p*100}}%, #f0f0f0 0)"></view>
-      <view class="ring-data">
-        <text class="label">蛋白</text>
-        <text class="value">{{intake.p}}g</text>
-      </view>
-    </view>
-    <view class="ring-box">
-      <view class="ring c-ring" style="background: conic-gradient(#000 {{intake.c/targets.c*100}}%, #f0f0f0 0)"></view>
-      <view class="ring-data">
-        <text class="label">碳水</text>
-        <text class="value">{{intake.c}}g</text>
-      </view>
-    </view>
-    <view class="ring-box">
-      <view class="ring f-ring" style="background: conic-gradient(#000 {{intake.f/targets.f*100}}%, #f0f0f0 0)"></view>
-      <view class="ring-data">
-        <text class="label">脂肪</text>
-        <text class="value">{{intake.f}}g</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 主操作区：原研哉“空”之核心 -->
-  <view class="main-stage">
-    <!-- 统一导航：无边框文本流 -->
-    <scroll-view class="cat-nav" scroll-x show-scrollbar="{{false}}">
-      <view 
-        wx:for="{{foodDatabase}}" 
-        wx:key="category"
-        class="nav-item {{currentCatIdx === index ? 'active' : ''}}"
-        bindtap="selectCategory"
-        data-idx="{{index}}"
-      >
-        {{item.category}}
-      </view>
-    </scroll-view>
-
-    <!-- 精准单品：极致提纯 -->
-    <view class="food-selector-box">
-      <picker 
-        mode="selector" 
-        range="{{foodDatabase[currentCatIdx].items}}" 
-        range-key="name" 
-        value="{{currentFoodIdx}}"
-        bindchange="onFoodChange"
-      >
-        <view class="food-text-picker">
-          {{foodDatabase[currentCatIdx].items[currentFoodIdx].name}} <text class="minimal-arrow">⌄</text>
+      <view class="header-actions">
+        <view class="icon-btn" bindtap="toggleTargetModal" style="height: {{menuHeight}}px; width: {{menuHeight}}px;">
+          <text class="icon-settings-text">SET</text>
         </view>
-      </picker>
+      </view>
+    </view>
+  </view>
+
+  <view class="content-body" style="padding-top: {{navHeight + 8}}px;">
+    <!-- Precision Metrics: Pro Rings -->
+    <view class="rings-terminal">
+      <view class="ring-unit" wx:for="{{['p', 'c', 'f']}}" wx:key="*this" wx:for-item="key">
+        <view class="ring-shell">
+          <view class="ring-canvas" style="background: conic-gradient({{key === 'p' ? '#007AFF' : (key === 'c' ? '#FF9500' : '#34C759')}} {{percentages[key] + '%'}}, #F2F2F7 0deg);">
+            <view class="ring-core">
+              <text class="ring-pct">{{percentages[key]}}%</text>
+            </view>
+          </view>
+        </view>
+        <view class="ring-info">
+          <text class="ring-label">{{key === 'p' ? 'PRO' : (key === 'c' ? 'CARB' : 'FAT')}}</text>
+          <text class="ring-val">{{intake[key]}}g</text>
+        </view>
+      </view>
     </view>
 
-    <!-- 视觉黑洞：数据操作中心 -->
-    <view class="input-focus-group">
-      <view class="input-row">
-        <input 
-          class="numeric-giant" 
-          type="digit" 
-          placeholder="0" 
-          placeholder-class="giant-placeholder"
-          bindinput="onWeightInput" 
-          value="{{inputValue}}" 
-        />
-        <text class="unit-label">g</text>
+    <!-- Composer: Log Entry -->
+    <view class="composer-section">
+      <view class="composer-card">
+        <view class="composer-header">
+          <text class="section-title">Log Entry</text>
+          <view class="reset-trigger" bindtap="resetTodayData">RESET</view>
+        </view>
+        
+        <view class="segmented-control">
+          <view 
+            wx:for="{{customCategories}}" 
+            wx:key="*this"
+            class="segment-item {{currentCatIdx === index ? 'active' : ''}}"
+            bindtap="selectCategory"
+            data-idx="{{index}}"
+          >
+            {{item}}
+          </view>
+        </view>
+
+        <view class="input-matrix">
+          <view class="input-group main-picker">
+            <text class="input-label">FOOD ITEM</text>
+            <picker mode="selector" range="{{foodDatabase[currentCatIdx].items}}" range-key="name" value="{{currentFoodIdx}}" bindchange="onFoodChange">
+              <view class="picker-value" bindlongpress="onLongPressLibraryItem">
+                {{foodDatabase[currentCatIdx].items[currentFoodIdx].name || 'Select food'}}
+                <text class="chevron-v">v</text>
+              </view>
+            </picker>
+          </view>
+
+          <view class="input-group weight-input">
+            <text class="input-label">AMOUNT</text>
+            <view class="amount-field">
+              <input type="digit" placeholder="0" bindinput="onWeightInput" value="{{inputValue}}" />
+              <text class="unit">g</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="projection-strip" wx:if="{{calcResult.p > 0 || calcResult.c > 0 || calcResult.f > 0}}">
+          <view class="proj-item">P <text>+{{calcResult.p}}</text></view>
+          <view class="proj-item">C <text>+{{calcResult.c}}</text></view>
+          <view class="proj-item">F <text>+{{calcResult.f}}</text></view>
+        </view>
+
+        <view class="action-btn-container">
+          <button class="primary-action-centered" bindtap="addIntake">LOG INTAKE</button>
+        </view>
+        
+        <view class="history-peek" wx:if="{{lastRecord}}">
+        
+          <text class="peek-label">LAST LOG</text>
+          <text class="peek-value">{{lastRecord}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Quick Converter Section -->
+    <view class="quick-converter">
+      <view class="converter-card">
+     <view class="converter-controls">
+          <view class="control-group type-picker">
+            <text class="input-label">CATEGORY</text>
+            <picker bindchange="onConvertTypeChange" value="{{convertIdx}}" range="{{displayConverters}}">
+              <view class="picker-value-mini" bindlongpress="onLongPressConverter">
+                {{displayConverters[convertIdx]}}
+                <text class="chevron-v">v</text>
+              </view>
+            </picker>
+          </view>
+          
+          <view class="control-group value-input">
+            <text class="input-label">WEIGHT (G/两)</text>
+            <input type="digit" placeholder="0" bindinput="onConvertInput" value="{{convertInput}}" />
+          </view>
+        </view>
+
+        <view class="converter-result-area">
+          <text class="result-label">CALCULATED RESULT</text>
+          <view class="result-display">
+            <text class="result-num">{{convertResult}}</text>
+            <text class="result-unit">{{convertUnit}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Redesigned Target Modal -->
+  <view class="modal-overlay" wx:if="{{showTargetModal}}" bindtap="toggleTargetModal">
+    <view class="modal-content-pro" catchtap="noop">
+      <view class="modal-top-bar">
+        <text class="modal-title-bold">Daily Targets</text>
+        <view class="close-x-btn" bindtap="toggleTargetModal">✕</view>
       </view>
       
-      <!-- 数据引力：紧密贴附 -->
-      <view class="nutrient-gravity-bar">
-        <text>P {{calcResult.p}}</text>
-        <text>C {{calcResult.c}}</text>
-        <text>F {{calcResult.f}}</text>
+      <view class="target-editor-grid">
+        <view class="editor-row" wx:for="{{['p', 'c', 'f']}}" wx:key="*this" wx:for-item="k">
+          <view class="editor-info">
+            <text class="editor-label">{{k === 'p' ? 'Protein' : (k === 'c' ? 'Carbs' : 'Fats')}}</text>
+            <text class="editor-sub">Recommended for your activity</text>
+          </view>
+          <view class="editor-input-box">
+            <input type="digit" value="{{tempTargets[k]}}" data-key="{{k}}" bindinput="onTargetInput" />
+            <text class="editor-unit">g</text>
+          </view>
+        </view>
       </view>
-
-      <!-- 重新锚定：紧随数据面板 -->
-      <button class="confirm-trigger" bindtap="addIntake">确认摄入</button>
+      
+      <view class="modal-footer">
+        <button class="save-targets-btn" bindtap="saveCustomTargets">UPDATE DAILY GOALS</button>
+      </view>
     </view>
   </view>
 
-  <!-- 底部留空：适配安全区 -->
-  <view class="action-footer"></view>
+  <!-- Custom Converter Modal -->
+  <view class="modal-overlay" wx:if="{{showConverterModal}}" bindtap="toggleConverterModal">
+    <view class="modal-content-pro" catchtap="noop">
+      <view class="modal-top-bar">
+        <text class="modal-title-bold">{{newRule.id ? 'Edit Rule' : 'New Rule'}}</text>
+        <view class="close-x-btn" bindtap="toggleConverterModal">✕</view>
+      </view>
+      
+      <view class="target-editor-grid">
+        <view class="editor-row">
+          <view class="editor-info">
+            <text class="editor-label">Name</text>
+            <text class="editor-sub">e.g. Rice(Cooked/g)</text>
+          </view>
+          <view class="editor-input-box" style="width: 300rpx;">
+            <input type="text" placeholder="Rule name" data-key="name" bindinput="onNewRuleInput" value="{{newRule.name}}" style="width: 100%;" />
+          </view>
+        </view>
+
+        <view class="editor-row">
+          <view class="editor-info">
+            <text class="editor-label">Factor</text>
+            <text class="editor-sub">Result = Input * Factor</text>
+          </view>
+          <view class="editor-input-box">
+            <input type="digit" placeholder="0.28" data-key="factor" bindinput="onNewRuleInput" value="{{newRule.factor}}" />
+          </view>
+        </view>
+
+        <view class="editor-row">
+          <view class="editor-info">
+            <text class="editor-label">Unit</text>
+            <text class="editor-sub">Result suffix</text>
+          </view>
+          <view class="editor-input-box" style="width: 200rpx;">
+            <input type="text" placeholder="g carb" data-key="unit" bindinput="onNewRuleInput" value="{{newRule.unit}}" style="width: 100%;" />
+          </view>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="save-targets-btn" bindtap="saveConverter">SAVE RULE</button>
+      </view>
+    </view>
+  </view>
 </view>

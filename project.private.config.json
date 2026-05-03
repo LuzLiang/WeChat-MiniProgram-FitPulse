@@ -6,18 +6,18 @@
     "urlCheck": true,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
-    "skylineRenderEnable": false,
-    "preloadBackgroundData": false,
+    "skylineRenderEnable": true,
+    "preloadBackgroundData": true,
     "autoAudits": false,
     "useApiHook": true,
     "showShadowRootInWxmlPanel": true,
     "useStaticServer": false,
     "useLanDebug": false,
     "showES6CompileOption": false,
-    "bigPackageSizeSupport": false,
+    "bigPackageSizeSupport": true,
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true
   },
-  "libVersion": "3.15.2",
+  "libVersion": "3.14.3",
   "condition": {}
 }

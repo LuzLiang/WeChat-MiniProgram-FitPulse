@@ -1,0 +1,65 @@
+<view class="container">
+  <view class="safe-header" style="height: {{navHeight}}px;">
+    <view class="header-main" style="top: {{menuTop}}px; height: {{menuHeight}}px; right: {{menuRight}}px;">
+      <view class="header-title-group">
+        <text class="page-label">ANALYTICS</text>
+        <text class="page-title">Stats & Insights</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="content-body" style="padding-top: {{navHeight}}px;">
+    <view class="insights-frame">
+      <view class="canvas-viewport">
+        <canvas type="2d" id="waveChart" class="wave-canvas" bindtouchstart="handleChartTouch" bindtouchmove="handleChartTouch" bindtouchend="handleChartTouchEnd"></canvas>
+      </view>
+      
+      <view class="frame-controls">
+        <view class="tab-group">
+          <view class="tab-item {{activeChartTab === 'total' ? 'active' : ''}}" bindtap="switchChartTab" data-tab="total">Total</view>
+          <view class="tab-item {{activeChartTab === 'p' ? 'active' : ''}}" bindtap="switchChartTab" data-tab="p">P</view>
+          <view class="tab-item {{activeChartTab === 'c' ? 'active' : ''}}" bindtap="switchChartTab" data-tab="c">C</view>
+          <view class="tab-item {{activeChartTab === 'f' ? 'active' : ''}}" bindtap="switchChartTab" data-tab="f">F</view>
+        </view>
+      </view>
+
+      <view class="summary-grid">
+        <view class="summary-cell">
+          <text class="cell-label">7-DAY AVG</text>
+          <text class="cell-value">{{avgIntake}}{{activeChartTab === 'total' ? 'kcal' : 'g'}}</text>
+        </view>
+        <view class="summary-cell">
+          <text class="cell-label">PEAK</text>
+          <text class="cell-value">{{peakIntake}}{{activeChartTab === 'total' ? 'kcal' : 'g'}}</text>
+        </view>
+      </view>
+
+      <view class="history-list-section">
+        <text class="section-label">DAILY BREAKDOWN</text>
+        <view class="history-list">
+          <view class="history-item {{item.p==0 && item.c==0 && item.f==0 ? 'empty-day' : ''}}" wx:for="{{weeklyHistory}}" wx:key="date">
+            <view class="hi-date">
+              <text class="hi-day">{{item.displayDate}}</text>
+              <text class="hi-date-str">{{item.date}}</text>
+            </view>
+
+            <view class="hi-macros" wx:if="{{item.p>0 || item.c>0 || item.f>0}}">
+              <text class="m-val">P {{item.p}}</text>
+              <text class="m-dot">·</text>
+              <text class="m-val">C {{item.c}}</text>
+              <text class="m-dot">·</text>
+              <text class="m-val">F {{item.f}}</text>
+            </view>
+            <view class="hi-macros empty-text" wx:else>No Data</view>
+
+            <view class="hi-total">
+              <text class="t-num">{{item.p*4 + item.c*4 + item.f*9}}</text>
+              <text class="t-unit">kcal</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+</view>

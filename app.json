@@ -1,32 +1,37 @@
 {
-     "entryPagePath": "pages/diet/index",
-     "pages": [
-       "pages/diet/index",
-      "pages/welcome/index",
-       "pages/pantry/index"
-     ],
-    "window": {
-     "navigationBarTextStyle": "black",
-     "navigationBarTitleText": "FitPulse",
-      "navigationBarBackgroundColor": "#ffffff",
-     "backgroundColor": "#ffffff"
-    },
-   "tabBar": {
-     "selectedColor": "#000000",
-      "backgroundColor": "#ffffff",
+  "pages": [
+    "pages/diet/index",
+    "pages/stats/index",
+    "pages/welcome/index",
+    "pages/pantry/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "FitPulse",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#ffffff"
+  },
+  "tabBar": {
+    "selectedColor": "#007AFF",
+    "backgroundColor": "#ffffff",
     "borderStyle": "white",
-      "list": [
-        {
-         "pagePath": "pages/diet/index",
-         "text": "追踪"
-        },
-        {
-         "pagePath": "pages/pantry/index",
-         "text": "库存"
-       }
+    "list": [
+      {
+        "pagePath": "pages/diet/index",
+        "text": "追踪"
+      },
+      {
+        "pagePath": "pages/stats/index",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/pantry/index",
+        "text": "库存"
+      }
     ]
-   },
-   "lazyCodeLoading": "requiredComponents",
- "style": "v2",
-   "sitemapLocation": "sitemap.json"
- }
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
